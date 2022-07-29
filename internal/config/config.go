@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-func Init(cfgName string) {
+func Init(cfgName string) error {
 	envCfgName := os.Getenv("CONFIG_NAME")
 	if len(envCfgName) != 0 {
 		cfgName = envCfgName
@@ -24,8 +24,8 @@ func Init(cfgName string) {
 	viper.AddConfigPath("./config")
 	viper.AddConfigPath("./internal/config")
 
-	err := viper.ReadInConfig()
-	if err != nil {
-		panic(fmt.Errorf("Fatal error config file: %s ", err))
+	if err := viper.ReadInConfig(); err != nil {
+		return fmt.Errorf("fatal error config file: %w ", err)
 	}
+	return nil
 }
