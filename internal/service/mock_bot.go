@@ -1,22 +1,27 @@
 package service
 
 import (
+	"main/internal/domain"
 	"main/internal/model"
-
-	"github.com/shopspring/decimal"
 )
 
 type MockBot struct {
-	Balance  decimal.Decimal
-	Strategy Strategy
-	Orders   []model.MockOrder
+	symbol   string
+	base     model.Balance
+	currency model.Balance
+	strategy Strategy
+	orders   []model.MockOrder
+	provider domain.KlineProvider
 }
 
-func NewMockBot(balance decimal.Decimal, strategy Strategy) *MockBot {
+func NewMockBot(symbol string, base, currency model.Balance, strategy Strategy, provider domain.KlineProvider) *MockBot {
 	return &MockBot{
-		Balance:  balance,
-		Strategy: strategy,
-		Orders:   make([]model.MockOrder, 0, 20),
+		symbol:   symbol,
+		base:     base,
+		currency: currency,
+		strategy: strategy,
+		orders:   make([]model.MockOrder, 0, 20),
+		provider: provider,
 	}
 }
 

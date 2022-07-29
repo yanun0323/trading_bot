@@ -19,11 +19,21 @@ func NewApp(symbol string) error {
 	}
 
 	client := binance.NewClient(viper.GetString("token.binance.key"), viper.GetString("token.binance.secret"))
-	fmt.Println(client)
-	InitKline(client, symbol, interval.Min15)
-
 	// futuresClient := binance.NewFuturesClient(apiKey, secretKey)   // USDT-M Futures
 	// deliveryClient := binance.NewDeliveryClient(apiKey, secretKey) // Coin-M Futures
+
+	// InitKline(client, symbol, interval.Min15)
+	account, err := ConnectAccount(client)
+	if err != nil {
+		return fmt.Errorf("connect account, %w", err)
+	}
+
+	for _, balance := range account.Balances {
+		if balance.Asset == "BTC" || balance.Asset == "ETH" || balance.Asset == "USDT" {
+			fmt.Println(balance.Asset + ": (free)" + balance.Free + ", (lock)" + balance.Locked)
+		}
+	}
+
 	return nil
 }
 
@@ -55,4 +65,12 @@ func InitWebSocket(symbol string, interval interval.Interval) {
 		return
 	}
 	<-doneC
+}
+
+func ConnectAccount(client *binance.Client) (*binance.Account, error) {
+	res, err := client.NewGetAccountService().Do(context.Background())
+	if err != nil {
+		return nil, fmt.Errorf("new get account service, %w", err)
+	}
+	return res, nil
 }
