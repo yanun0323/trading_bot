@@ -1,0 +1,7 @@
+token:
+  binance:
+    key: XXXXX
+    secret: XXXXX
+
+setting:
+  symbol: BTCUSDT
