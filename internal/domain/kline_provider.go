@@ -7,5 +7,5 @@ import (
 )
 
 type KlineProvider interface {
-	GetKline(string, interval.Interval) []*binance.Kline
+	GetKline(string, interval.Interval) ([]*binance.Kline, error)
 }
