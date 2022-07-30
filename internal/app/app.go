@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"main/internal/model/interval"
+	"main/internal/service"
 
 	"github.com/adshao/go-binance/v2"
 	"github.com/spf13/viper"
@@ -19,6 +20,9 @@ func NewApp(symbol string) error {
 	}
 
 	client := NewClient()
+	bot := service.NewMockBot(symbol, "100", service.NewStrategyService(), service.NewProvider(client))
+	bot.Run()
+
 	// futuresClient := binance.NewFuturesClient(apiKey, secretKey)   // USDT-M Futures
 	// deliveryClient := binance.NewDeliveryClient(apiKey, secretKey) // Coin-M Futures
 

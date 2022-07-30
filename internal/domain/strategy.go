@@ -1,8 +1,11 @@
 package domain
 
-import "github.com/adshao/go-binance/v2"
+import (
+	"main/internal/model/action"
 
-// TODO: Implement Strategy
+	"github.com/adshao/go-binance/v2"
+)
+
 type Strategy interface {
-	Calculate(*[]binance.Kline)
+	Calculate([]*binance.Kline) action.Action
 }
